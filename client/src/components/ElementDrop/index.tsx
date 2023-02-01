@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, useEffect} from 'react';
+import React, {CSSProperties, FC} from 'react';
 import st from './elememntDrop.module.scss';
 import {IElementList} from '../Layout';
 import cn from 'classnames';
