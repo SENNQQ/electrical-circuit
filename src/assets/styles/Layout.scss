@@ -1,0 +1,61 @@
+#root {
+  height: 100%;
+  width: 100%;
+
+  .wrapper {
+    display: grid;
+    grid-template: 1fr/18% 1fr;
+    grid-template-areas:"sidebar panel";
+  }
+
+  header {
+    grid-area: header;
+    height: 100px;
+    background-color: #81b6b6;
+  }
+
+  aside {
+    grid-area: sidebar;
+    background-color: #8b81b6;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  main {
+    grid-area: panel;
+    padding: 20px;
+    height: 100vh;
+  }
+  header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      font-size: 18px;
+    }
+  }
+  .dragContainer {
+    height: 100vh;
+    .dragBlock {
+      height: auto;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      padding: 5px;
+
+      svg {
+        width: 150px;
+        height: 100%;
+      }
+
+      img {
+        background-repeat: no-repeat;
+      }
+
+    }
+
+  }
+
+}
