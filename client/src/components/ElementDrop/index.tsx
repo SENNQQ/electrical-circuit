@@ -1,6 +1,6 @@
 import React, {CSSProperties, FC} from 'react';
 import st from './elememntDrop.module.scss';
-import {IElementList} from '../Layout';
+import {IElementList} from '../../pages/Schema';
 import cn from 'classnames';
 
 interface IElementDrop {

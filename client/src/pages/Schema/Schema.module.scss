@@ -1,0 +1,98 @@
+.wrapper {
+  display: grid;
+  grid-template: 100px 100%/340px 1fr;
+  grid-template-areas:"sidebar header"
+                      "sidebar panel";
+
+  .header {
+    grid-area: header;
+    background-color: #DDE5F4FF;
+    display: grid;
+    grid-template-columns: 150px 1fr 150px;
+    grid-template-areas: '. inner btn';
+    align-items: center;
+    justify-items: center;
+
+    &Inner {
+      grid-area: inner;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-top: 5px;
+    }
+
+    &Info {
+      display: flex;
+      margin-top: 5px;
+
+      div {
+        font-size: 18px;
+        margin-right: 10px;
+        font-weight: 600;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        span {
+          font-weight: 400;
+        }
+      }
+    }
+
+    &Btn {
+      grid-area: btn;
+      padding: 15px;
+      background: #3E4684FF;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: .1s ease-in-out;
+
+      &:hover {
+        background: lighten(#3E4684FF, 10%);
+      }
+    }
+  }
+
+
+  aside {
+    grid-area: sidebar;
+    background-color: #F1F7FEFF;
+    position: sticky;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    overflow-y: auto;
+
+  }
+
+  .dragContainer {
+    grid-area: panel;
+    height: calc(100vh - 100px);
+  }
+
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px;
+    h1 {
+      font-weight: 500;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    button {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}

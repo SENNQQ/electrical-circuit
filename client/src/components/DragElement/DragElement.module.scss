@@ -1,0 +1,11 @@
+.dragElement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  svg {
+    width: 150px;
+    height: 100%;
+  }
+}
