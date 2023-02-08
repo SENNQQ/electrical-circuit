@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, useEffect, useRef} from 'react';
+import React, {CSSProperties, FC, RefObject, useEffect} from 'react';
 import styles from './DrawingPanel.module.scss';
 import {IElementList} from '../../pages/Schema';
 import ElementDrop from '../ElementDrop';
@@ -10,34 +10,13 @@ export interface TItem extends IElementList {
 
 const DrawingPanel: FC<{
     dropItem: TItem | undefined,
+    positionArray: { id: number, positions: CSSProperties }[],
+    panelRef: RefObject<HTMLDivElement>
     items: TItem[],
-    setItems:  React.Dispatch<React.SetStateAction<TItem[]>>
-}> = ({dropItem, items, setItems}) => {
+    setItems: React.Dispatch<React.SetStateAction<TItem[]>>
+}> = ({dropItem, items, positionArray, panelRef, setItems}) => {
 
-    const refPanel = useRef<HTMLDivElement>(null);
-
-    const positionArray: { id: number, positions: CSSProperties }[] = [
-        {id: 0, positions: {top: '1%', left: '18.2%',  width: '4.3%', height: '5.6%'}},
-        {id: 1, positions: {top: '9.5%', left: '18.2%', width: '4.3%', height: '5.6%'}},
-        {id: 2, positions: {top: '18%', left: '18.2%', width: '4.3%', height: '5.6%'}},
-        {id: 3, positions: {top: '27%', left: '18.2%', width: '4.3%', height: '5.6%'}},
-        {id: 4, positions: {top: '35%', left: '18.2%', width: '4.3%', height: '5.6%'}},
-        {id: 5, positions: {top: '45%', left: '18.2%', width: '4.3%', height: '5.6%'}},
-        {id: 6, positions: {top: '26%', left: '31%', width: '12%', height: '15.6%'}},
-        {id: 7, positions: {top: '4%', left: '31%', width: '12%', height: '15.6%'}},
-        {id: 8, positions: {top: '67%', left: '37%', width: '7.8%', height: '6%'}},
-        {id: 9, positions: {top: '77%', left: '37%', width: '7.8%', height: '6%'}},
-        {id: 10, positions: {top: '66%', left: '62.5%', width: '8.5%', height: '11.1%'}},
-        {id: 11, positions: {top: '48.5%', left: '62.5%', width: '8.5%', height: '11.1%'}},
-        {id: 12, positions: {top: '30%', left: '59%', width: '8.5%', height: '11.1%'}},
-        {id: 13, positions: {top: '15%', left: '52.5%', width: '7.8%', height: '6%'}},
-        {id: 14, positions: {top: '8%', left: '55.5%', width: '4.3%', height: '5.6%'}},
-        {id: 15, positions: {top: '8%', left: '64.5%', width: '4.3%', height: '5.6%'}},
-        {id: 16, positions: {top: '15%', left: '70%', width: '7.8%', height: '6%'}},
-        {id: 17, positions: {top: '3%', left: '79%', width: '12%', height: '15.6%'}},
-        {id: 18, positions: {top: '21%', left: '79%', width: '12%', height: '7.6%'}},
-        {id: 19, positions: {top: '37%', left: '78%', width: '8.5%', height: '11.1%'}},
-    ];
+    // const refPanel = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (dropItem)
@@ -49,19 +28,18 @@ const DrawingPanel: FC<{
             });
     }, [dropItem, setItems]);
 
-
     return (
-        <div className={styles.panel}>
-           <div className={styles.panel2} ref={refPanel}>
-               {positionArray.map((position) => (
-                   <ElementDrop
-                       key={position.id}
-                       dropItem={items.find(item => item.key === position.id)}
-                       index={position.id}
-                       position={position.positions}
-                   />
-               ))}
-           </div>
+        <div className={styles.panel} ref={panelRef}>
+            <div className={styles.panel2}>
+                {positionArray.map((position) => (
+                    <ElementDrop
+                        key={position.id}
+                        dropItem={items.find(item => item.key === position.id)}
+                        index={position.id}
+                        position={position.positions}
+                    />
+                ))}
+            </div>
         </div>
     );
 };

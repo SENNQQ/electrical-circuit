@@ -49,7 +49,6 @@ const DragElement: FC<{ item: IElementList, cb: (item: IElementList, key: string
                 e.preventDefault();
                 point.x = e.clientX;
                 point.y = e.clientY;
-                console.log(e);
                 setPosition(prevState => ({
                     ...prevState,
                     shape: {
