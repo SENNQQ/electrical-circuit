@@ -15,7 +15,6 @@ class ExportService {
                 department,
                 schemaTitle,
                 img: dataURI,
-                // users: users,
             },
             path: `./files/export/${fileName}`,
             type: '',
