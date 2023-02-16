@@ -24,7 +24,7 @@ class ExportService {
             format: 'A4',
             orientation: 'landscape',
         })
-        return `http://localhost:4000/files/export/${fileName}`
+        return `http://localhost:4000/files/${fileName}`
     }
 }
 
