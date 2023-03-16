@@ -6,7 +6,7 @@ const StudentModel = sequelize.define('student', {
     name: {type: DataTypes.STRING(100), allowNull: false},
     group: {type: DataTypes.STRING(50), allowNull: false},
     attempt: {type: DataTypes.INTEGER, defaultValue: 1},
-    file: {type: DataTypes.TEXT, allowNull: false},
+    file: {type: DataTypes.ARRAY(DataTypes.TEXT), defaultValue: []},
 });
 
 
