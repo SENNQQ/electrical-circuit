@@ -170,6 +170,7 @@ const Schema = () => {
     const navigate = useNavigate();
     const panelRef = useRef<HTMLDivElement>(null);
 
+    const [filePath, setFilePath] = useState('')
     const [currentImg, setCurrentImg] = useState<IElementList & { key: number }>();
     const [items, setItems] = useState<TItem[]>([]);
     const [modal, setModal] = useState<{ isOpened: boolean, isCorrect: boolean }>();
@@ -178,7 +179,7 @@ const Schema = () => {
     const setItemHandler = (item: IElementList, key: string) => {
         setCurrentImg({...item, key: Number(key)});
     };
-    const answerHandler = () => {
+    const answerHandler = async () => {
         if (items.length !== correctAnswer.length)
             return toast.error('Не всі комірки заповнені');
         const answers = correctAnswer.reduce((sum, answer) => {
@@ -188,10 +189,29 @@ const Schema = () => {
             });
             return sum;
         }, 0);
-        if (answers === correctAnswer.length)
-            setModal({isOpened: true, isCorrect: true});
-        else
-            setModal({isOpened: true, isCorrect: false});
+        if (panelRef.current) {
+            setIsLoading(true)
+            const dataURI = await htmlToImage.toPng(panelRef.current);
+            axios.post<{ filePath?: string }>('http://localhost:4000/api/student/', {
+                name: location.state.user.name,
+                group: location.state.user.group,
+                department: location.state.choice.department,
+                schemaTitle: location.state.choice.schema.title,
+                schema: location.state.choice.schema.name,
+                dataURI,
+                isCorrect: modal?.isCorrect
+            }).then(res => {
+                if (res.data.filePath) {
+                    setFilePath(res.data.filePath)
+                    setModal({isOpened: true, isCorrect: answers === correctAnswer.length});
+                } else
+                    toast.error('При обробці даних сталася помилка')
+            }).catch(err => {
+                console.log(err);
+                toast.error('При обробці даних сталася помилка')
+            }).finally(() => setIsLoading(false))
+
+        }
     };
 
     const modalHandler = () => {
@@ -201,42 +221,21 @@ const Schema = () => {
     };
 
     const pdfHandler = async () => {
-        if (panelRef.current) {
-            setIsLoading(true);
-            const dataURI = await htmlToImage.toPng(panelRef.current);
-            const {data} = await axios.post('http://localhost:4000/api/export/pdf', {
-                name: location.state.user.name,
-                group: location.state.user.group,
-                department: location.state.choice.department,
-                schemaTitle: location.state.choice.schema.title,
-                dataURI,
-            });
-            if (data.filePath) {
-                window.open(data.filePath, '_blank')?.focus();
-                modalHandler();
-            }
-            setIsLoading(false);
+        if (filePath) {
+            window.open(filePath, '_blank')?.focus();
+            modalHandler();
         }
-        // const answers = items.map(item => {
-        //     let newItem;
-        //     positionArray.forEach(pos => {
-        //         if (pos.id === item.key)
-        //             newItem = {name: item.text, positions: pos.positions};
-        //     });
-        //     return newItem;
-        // });
-
-        // console.log(data);
     };
 
     return (
         <div className={styles.wrapper}>
+            {isLoading && <Loading/>}
             <header className={styles.header}>
                 <div className={styles.headerInner}>
                     <h1>{location.state.choice.department}</h1>
                     <h2>{location.state.choice.schema.title}</h2>
                     <div className={styles.headerInfo}>
-                        <div><span>Студент:</span> {location.state.user.name}</div>
+                        <div><span>Студент:</span> {location.state.user.name.replace(/(^|\s)\S/g, function(a:string) {return a.toUpperCase()})}</div>
                         <div><span>Група:</span> {location.state.user.group}</div>
                     </div>
                 </div>

@@ -2,19 +2,21 @@ import pdf from 'pdf-creator-node';
 import fs from 'fs';
 
 class ExportService {
-    async createPDFFile(name, group, dataURI, department, schemaTitle) {
+    async createPDFFile(name, group, dataURI, department, schemaTitle, isCorrect) {
         const html = fs.readFileSync('files/templates/schema.html', {encoding: 'utf-8'});
-
-        const fileName = `${schemaTitle}_${name}_${Date.now()}.pdf`
+        const student = name.replace(/(^|\s)\S/g, function(a) {return a.toUpperCase()})
+        const fileName = `${schemaTitle}_${student}_${Date.now()}.pdf`
 
         const document = {
             html: html,
             data: {
-                name,
+                name: student,
                 group,
                 department,
                 schemaTitle,
                 img: dataURI,
+                isCorrect: isCorrect ? 'Схема була складена правильно' : 'Схема була складена неправильно',
+                date: new Date().toLocaleString()
             },
             path: `./files/export/${fileName}`,
             type: '',
@@ -24,7 +26,7 @@ class ExportService {
             format: 'A4',
             orientation: 'landscape',
         })
-        return `http://localhost:4000/files/${fileName}`
+        return fileName
     }
 }
 

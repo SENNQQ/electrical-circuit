@@ -11,6 +11,31 @@
     display: flex;
   }
 
+  .empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    h1 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    a {
+      padding: 15px 25px;
+      background: #3E4684FF;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: .1s ease-in-out;
+
+      &:hover {
+        background: lighten(#3E4684FF, 10%);
+      }
+    }
+  }
+
   .block {
     grid-area: block;
     background: #F1F7FEFF;

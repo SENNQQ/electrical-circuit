@@ -9,7 +9,14 @@ const Greeting: FC = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<TGreetingForm>({mode: 'onSubmit'});
     const navigate = useNavigate();
     const submitHandler: SubmitHandler<TGreetingForm> = data => {
-        navigate('/choice', {state: {user: data}});
+        navigate('/choice', {
+            state: {
+                user: {
+                    name: data.name.trim().toLowerCase(),
+                    group: data.group.trim().toUpperCase()
+                }
+            }
+        });
     };
     return (
         <div className={styles.greeting}>
@@ -20,6 +27,14 @@ const Greeting: FC = () => {
                     <input type="text" id="name"
                            placeholder="Степаненко Руслан Олександрович" {...register('name', {
                         required: 'Введіть ПІБ',
+                        validate: value => {
+                            if (/[0-9]/.test(value))
+                                return 'ПІБ не повинно містити цифри'
+                            else if (value.trim().length === 0)
+                                return 'Введіть ПІБ'
+                        },
+                        maxLength: {value: 100, message: 'Максимальна довжина 100 символів'},
+                        minLength: {value: 5, message: 'Мінімальна довжина 5 символів'}
                     })}/>
                     {errors.name && <span>{errors.name.message}</span>}
                 </div>
@@ -28,6 +43,12 @@ const Greeting: FC = () => {
                     <input type="text" id="group"
                            placeholder="КН-343б" {...register('group', {
                         required: 'Введіть групу',
+                        validate: value => {
+                            if (value.trim().length === 0)
+                                return 'Введіть групу'
+                        },
+                        maxLength: {value: 8, message: 'Максимальна довжина 8 символів'},
+                        minLength: {value: 5, message: 'Мінімальна довжина 5 символів'}
                     })}/>
                     {errors.group && <span>{errors.group.message}</span>}
                 </div>
